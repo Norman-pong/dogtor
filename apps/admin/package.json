@@ -1,0 +1,44 @@
+{
+  "name": "admin",
+  "version": "0.1.0",
+  "scripts": {
+    "reset": "npx rimraf node_modules ./**/node_modules",
+    "dev": "modern dev",
+    "build": "modern build",
+    "start": "modern start",
+    "serve": "modern serve",
+    "new": "modern new",
+    "lint": "biome check",
+    "prepare": "simple-git-hooks",
+    "upgrade": "modern upgrade"
+  },
+  "engines": {
+    "node": ">=16.18.1"
+  },
+  "lint-staged": {
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
+      "biome check --files-ignore-unknown=true"
+    ]
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "dependencies": {
+    "@modern-js/runtime": "2.68.17",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.2.6",
+    "@modern-js/app-tools": "2.68.17",
+    "@modern-js/tsconfig": "2.68.17",
+    "@types/jest": "~30.0.0",
+    "@types/node": "~24.7.2",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "~19.2.2",
+    "lint-staged": "~16.2.4",
+    "rimraf": "^6.0.1",
+    "simple-git-hooks": "^2.13.1",
+    "typescript": "~5.9.3"
+  }
+}

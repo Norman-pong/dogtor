@@ -1,0 +1,20 @@
+{
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        "nx/enforce-module-boundaries": [
+          "error",
+          {
+            "enforceBuildableLibDependency": true,
+            "depConstraints": [
+              { "sourceTag": "type:app", "onlyDependOnLibsWithTags": ["type:lib"] },
+              { "sourceTag": "scope:admin", "onlyDependOnLibsWithTags": ["scope:shared", "scope:admin"] },
+              { "sourceTag": "scope:client", "onlyDependOnLibsWithTags": ["scope:shared", "scope:client"] }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "@dogtor/admin",
+  "sourceRoot": "apps/admin/src",
+  "projectType": "application",
+  "tags": ["type:app", "scope:admin"]
+}

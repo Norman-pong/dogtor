@@ -1,0 +1,6 @@
+{
+  "name": "@dogtor/dto",
+  "sourceRoot": "packages/dto/src",
+  "projectType": "library",
+  "tags": ["type:lib", "scope:shared"]
+}
