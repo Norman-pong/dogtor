@@ -1,0 +1,38 @@
+{
+  "name": "@dogtor/api-bun",
+  "sourceRoot": "apps/api-bun/src",
+  "projectType": "application",
+  "tags": ["type:app", "scope:api"],
+  "targets": {
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @dogtor/api-bun dev"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @dogtor/api-bun build"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @dogtor/api-bun typecheck"
+      }
+    },
+    "prisma-generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @dogtor/api-bun prisma:generate"
+      }
+    },
+    "prisma-migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @dogtor/api-bun prisma:migrate"
+      }
+    }
+  }
+}

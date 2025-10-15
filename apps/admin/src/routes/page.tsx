@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import { Helmet } from '@modern-js/runtime/head';
+import { trpcClient } from '@/api/trpc';
 import './index.css';
 
 const Index = () => (
@@ -11,86 +13,87 @@ const Index = () => (
       />
     </Helmet>
     <main>
-      <div className="title">
-        Welcome to
-        <img
-          className="logo"
-          src="https://lf3-static.bytednsdoc.com/obj/eden-cn/zq-uylkvT/ljhwZthlaukjlkulzlp/modern-js-logo.svg"
-          alt="Modern.js Logo"
-        />
-        <p className="name">Modern.js</p>
-      </div>
-      <p className="description">
-        Get started by editing <code className="code">src/routes/page.tsx</code>
-      </p>
-      <div className="grid">
-        <a
-          href="https://modernjs.dev/guides/get-started/introduction.html"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="card"
-        >
-          <h2>
-            Guide
-            <img
-              className="arrow-right"
-              src="https://lf3-static.bytednsdoc.com/obj/eden-cn/zq-uylkvT/ljhwZthlaukjlkulzlp/arrow-right.svg"
-              alt="Guide"
-            />
-          </h2>
-          <p>Follow the guides to use all features of Modern.js.</p>
-        </a>
-        <a
-          href="https://modernjs.dev/tutorials/foundations/introduction.html"
-          target="_blank"
-          className="card"
-          rel="noreferrer"
-        >
-          <h2>
-            Tutorials
-            <img
-              className="arrow-right"
-              src="https://lf3-static.bytednsdoc.com/obj/eden-cn/zq-uylkvT/ljhwZthlaukjlkulzlp/arrow-right.svg"
-              alt="Tutorials"
-            />
-          </h2>
-          <p>Learn to use Modern.js to create your first application.</p>
-        </a>
-        <a
-          href="https://modernjs.dev/configure/app/usage.html"
-          target="_blank"
-          className="card"
-          rel="noreferrer"
-        >
-          <h2>
-            Config
-            <img
-              className="arrow-right"
-              src="https://lf3-static.bytednsdoc.com/obj/eden-cn/zq-uylkvT/ljhwZthlaukjlkulzlp/arrow-right.svg"
-              alt="Config"
-            />
-          </h2>
-          <p>Find all configuration options provided by Modern.js.</p>
-        </a>
-        <a
-          href="https://github.com/web-infra-dev/modern.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="card"
-        >
-          <h2>
-            GitHub
-            <img
-              className="arrow-right"
-              src="https://lf3-static.bytednsdoc.com/obj/eden-cn/zq-uylkvT/ljhwZthlaukjlkulzlp/arrow-right.svg"
-              alt="Github"
-            />
-          </h2>
-          <p>View the source code on GitHub; feel free to contribute.</p>
-        </a>
-      </div>
+      <HealthStatus />
+      <CreateUserForm />
     </main>
   </div>
 );
 
+const HealthStatus = () => {
+  const [status, setStatus] = useState<'unknown' | 'ok' | 'error'>('unknown')
+  useEffect(() => {
+    ;(async () => {
+      try {
+        // const res = await trpcClient.health.query()
+        const res = await trpcClient.users.list.query()
+        console.log(res)
+        setStatus(res ? 'ok' : 'error')
+      } catch {
+        setStatus('error')
+      }
+    })()
+  }, [])
+
+  return (
+    <p className="description" style={{ marginTop: 12 }}>
+      API Health: {status === 'unknown' ? 'Checking…' : status.toUpperCase()}
+    </p>
+  )
+}
+
 export default Index;
+
+const CreateUserForm = () => {
+  const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setMessage(null)
+    setError(null)
+    try {
+      const res = await trpcClient.users.create.mutate({ email, name })
+      setMessage(`Created user: ${res.user.name} (${res.user.email})`)
+    } catch (err: any) {
+      setError('Failed to create user')
+      // Optionally log error details
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <form onSubmit={onSubmit} className="card" style={{ marginTop: 16 }}>
+      <h2>Create User</h2>
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+
+        <input
+          type="email"
+          placeholder="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          style={{ padding: 8 }}
+        />
+        <input
+          type="text"
+          placeholder="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          style={{ padding: 8 }}
+        />
+        <button type="submit" disabled={loading} style={{ padding: '8px 12px' }}>
+          {loading ? 'Creating…' : 'Create'}
+        </button>
+      </div>
+      {message && <p style={{ color: 'green', marginTop: 8 }}>{message}</p>}
+      {error && <p style={{ color: 'red', marginTop: 8 }}>{error}</p>}
+    </form>
+  )
+}

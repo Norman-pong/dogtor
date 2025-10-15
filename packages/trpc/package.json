@@ -1,0 +1,23 @@
+{
+  "name": "@dogtor/trpc",
+  "version": "0.0.1",
+  "private": false,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@dogtor/dto": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3"
+  },
+  "peerDependencies": {
+    "@trpc/client": ">=10.0.0",
+    "@trpc/server": ">=10.0.0",
+    "zod": ">=3.0.0"
+  }
+}

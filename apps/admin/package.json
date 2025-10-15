@@ -24,6 +24,7 @@
     "pre-commit": "npx lint-staged"
   },
   "dependencies": {
+    "@dogtor/trpc": "workspace:*",
     "@modern-js/runtime": "2.68.17",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
@@ -32,6 +33,8 @@
     "@biomejs/biome": "2.2.6",
     "@modern-js/app-tools": "2.68.17",
     "@modern-js/tsconfig": "2.68.17",
+    "@trpc/client": "^11.6.0",
+    "@trpc/server": "10.45.2",
     "@types/jest": "~30.0.0",
     "@types/node": "~24.7.2",
     "@types/react": "^19.2.2",

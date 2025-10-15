@@ -1,0 +1,20 @@
+{
+  "name": "@dogtor/shared-ts",
+  "sourceRoot": "packages/shared-ts/src",
+  "projectType": "library",
+  "tags": ["type:lib", "scope:shared"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @dogtor/shared-ts typecheck"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @dogtor/shared-ts build"
+      }
+    }
+  }
+}

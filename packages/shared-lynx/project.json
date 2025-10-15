@@ -1,0 +1,20 @@
+{
+  "name": "@dogtor/shared-lynx",
+  "sourceRoot": "packages/shared-lynx/src",
+  "projectType": "library",
+  "tags": ["type:lib", "scope:shared"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @dogtor/shared-lynx typecheck"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @dogtor/shared-lynx build"
+      }
+    }
+  }
+}

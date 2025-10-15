@@ -1,0 +1,20 @@
+{
+  "name": "@dogtor/trpc",
+  "sourceRoot": "packages/trpc/src",
+  "projectType": "library",
+  "tags": ["type:lib", "scope:trpc"],
+  "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @dogtor/trpc typecheck"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @dogtor/trpc build"
+      }
+    }
+  }
+}
