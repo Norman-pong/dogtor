@@ -12,9 +12,6 @@
     "prepare": "simple-git-hooks",
     "upgrade": "modern upgrade"
   },
-  "engines": {
-    "node": ">=16.18.1"
-  },
   "lint-staged": {
     "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
       "biome check --files-ignore-unknown=true"

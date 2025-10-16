@@ -12,7 +12,3 @@ export const UserListQueryDto = z.object({
   take: z.number().int().positive().max(100).default(10),
 })
 export type UserListQueryDto = z.infer<typeof UserListQueryDto>
-
-// DTO: 健康检查响应（可扩展）
-export const HealthDto = z.object({ ok: z.literal(true) })
-export type HealthDto = z.infer<typeof HealthDto>
