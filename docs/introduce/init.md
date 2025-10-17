@@ -1,13 +1,5 @@
 # 如何开始
 
-
-## 初始化项目
-
-```bash
-pnpx @modern-js/create@latest admin
-pnpm create rspeedy@latest
-```
-
 ### 结构
 
 ```
@@ -35,3 +27,20 @@ pnpm create rspeedy@latest
 │
 └─ .github/workflows     # CI：Nx 云缓存 + 并行测试/构建/部署
 ```
+
+## MCP 服务
+
+负责处理模型上下文协议（Model Context Protocol）的请求。
+
+### 功能
+
+- 提供模型上下文协议的服务端实现
+- 支持模型上下文协议的客户端调用
+- 支持模型上下文协议的插件扩展
+
+### 配置
+
+- 端口：6287
+- 环境变量：
+  - `CLIENT_PORT`：客户端端口，默认 6284
+  - `SERVER_PORT`：服务端端口，默认 6287
