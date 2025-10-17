@@ -2,5 +2,22 @@
   "name": "@dogtor/admin",
   "sourceRoot": "apps/admin/src",
   "projectType": "application",
-  "tags": ["type:app", "scope:admin"]
+  "tags": [
+    "type:app",
+    "scope:admin"
+  ],
+  "targets": {
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @dogtor/admin dev"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @dogtor/admin build"
+      }
+    }
+  }
 }
