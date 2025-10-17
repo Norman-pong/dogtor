@@ -1,0 +1,29 @@
+{
+  "name": "@dogtor/mcp",
+  "sourceRoot": "apps/mcp/src",
+  "projectType": "application",
+  "tags": [
+    "type:app",
+    "scope:mcp"
+  ],
+  "targets": {
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @dogtor/mcp dev"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @dogtor/mcp build"
+      }
+    },
+    "server": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm --filter @dogtor/mcp inspect:dev"
+      }
+    }
+  }
+}
