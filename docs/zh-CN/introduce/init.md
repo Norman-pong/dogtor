@@ -1,8 +1,8 @@
 # 如何开始
 
-### 结构
+## 项目结构
 
-```
+```txt title="项目结构"
 <root>
 ├─ package.json          # pnpm workspace 声明
 ├─ pnpm-workspace.yaml   # JS/TS 子包列表

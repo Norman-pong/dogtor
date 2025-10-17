@@ -1,0 +1,19 @@
+{
+  "name": "@dogtor/docs-site",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "rspress dev --port 3092",
+    "build": "rspress build",
+    "preview": "rspress preview"
+  },
+  "dependencies": {
+    "@trpc/client": "^10.45.2",
+    "@dogtor/trpc": "workspace:*",
+    "zod": "^3.24.1",
+    "zod-to-json-schema": "^3.24.6"
+  },
+  "devDependencies": {
+    "rspress": "2.0.0-beta.21"
+  }
+}

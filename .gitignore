@@ -49,3 +49,6 @@ vitest.config.*.timestamp*
 # Prisma/DB artifacts (do not commit dev databases)
 .data
 !data/.gitkeep
+
+# Rspress
+doc_build

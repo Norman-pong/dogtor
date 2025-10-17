@@ -5,6 +5,10 @@
   "type": "module",
   "main": "index.ts",
   "types": "index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./client": "./client.ts"
+  },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "build": "tsc -p tsconfig.json",

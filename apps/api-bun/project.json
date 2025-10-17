@@ -10,6 +10,12 @@
         "command": "bun --env-file=apps/api-bun/.env --hot apps/api-bun/src/index.ts"
       }
     },
+    "dev-playground": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "bun --env-file=apps/api-bun/.env.playground --hot apps/api-bun/src/index.ts"
+      }
+    },
     "build": {
       "executor": "nx:run-commands",
       "options": {
@@ -32,6 +38,12 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "pnpm --filter @dogtor/api-bun prisma:migrate"
+      }
+    },
+    "prisma-migrate-playground": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "$env:DATABASE_URL='file:../.data/playground.db'; pnpm --filter @dogtor/api-bun prisma:migrate"
       }
     }
   }
