@@ -14,7 +14,7 @@ on:
       - 'pnpm-workspace.yaml'
       - 'tsconfig.base.json'
       - 'nx.json'
-      - 'ci.yml'
+      - '.github/workflows/ci.yml'
   pull_request:
     paths:
       - 'apps/docs-site/**'
