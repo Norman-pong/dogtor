@@ -15,5 +15,8 @@
     {
       "path": "./packages/shared-lynx"
     },
+    {
+      "path": "./apps/docs-site"
+    }
   ]
 }

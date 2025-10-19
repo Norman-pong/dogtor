@@ -1,6 +1,6 @@
 {
   "name": "@dogtor/docs-site",
-  "version": "0.0.0",
+  "version": "0.0.1-alpha.1",
   "private": true,
   "scripts": {
     "dev": "rspress dev --port 3092",
