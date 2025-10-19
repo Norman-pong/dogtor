@@ -13,6 +13,8 @@ on:
       - 'package.json'
       - 'pnpm-workspace.yaml'
       - 'tsconfig.base.json'
+      - 'nx.json'
+      - 'ci.yml'
   pull_request:
     paths:
       - 'apps/docs-site/**'
@@ -80,7 +82,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Build docs-site
-        run: pnpm exec nx run docs-site:build
+        run: pnpm exec nx run docs-site:build --no-cloud
 
       - name: Setup Pages
         if: success()
