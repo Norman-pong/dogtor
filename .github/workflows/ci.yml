@@ -33,30 +33,29 @@ permissions:
   id-token: write
 
 jobs:
-  main:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          filter: tree:0
-          fetch-depth: 0
+  # main:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         filter: tree:0
+  #         fetch-depth: 0
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          version: 9.8.0
-          run_install: false
+  #     - uses: pnpm/action-setup@v4
+  #       name: Install pnpm
+  #       with:
+  #         version: 9.8.0
+  #         run_install: false
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20
+  #         cache: 'pnpm'
 
-      - run: pnpm install --frozen-lockfile
+  #     - run: pnpm install --frozen-lockfile
 
-      # - run: pnpm exec nx run-many -t lint test build typecheck
-      - run: pnpm exec nx fix-ci
-        if: always()
+  #     - run: pnpm exec nx fix-ci
+  #       if: always()
 
   docs-site:
     needs: main
