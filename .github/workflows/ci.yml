@@ -86,12 +86,14 @@ jobs:
       - name: Setup Pages
         if: success()
         uses: actions/configure-pages@v4
+        with:
+          enablement: true
 
       - name: Upload artifact
         if: success()
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist/apps/docs-site'
+          path: './apps/docs-site/doc_build'
 
       - name: Deploy to GitHub Pages
         if: success()
