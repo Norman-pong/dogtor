@@ -1,12 +1,10 @@
 ---
 pageType: home
 titleSuffix: '基于 Rsbuild 的静态站点生成器'
-
 hero:
   badge: 功能正在开发中 🚀
   name: Dogtor
-  text: |
-    全栈插件化架构：覆盖 App、Web、MCP 与微前端，灵活组合，极速交付
+  text: 全栈 AI 友好插件化架构
   tagline: 简单、高性能、易于扩展
   image:
     src: /dogtor-logo.png

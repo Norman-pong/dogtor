@@ -9,6 +9,9 @@ export default defineConfig({
   markdown: {
     globalComponents: [path.join(__dirname, 'src/components/Counter.tsx')],
   },
+  logo: '/dogtor-logo.png',
+  logoText: 'Dogtor',
+  icon: '/dogtor-logo.png',
 
   // 允许 md/mdx 以及 .tsx 组件路由作为页面
   route: {
