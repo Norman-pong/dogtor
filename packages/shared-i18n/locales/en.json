@@ -1,0 +1,26 @@
+{
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "error": "Error"
+  },
+  "users": {
+    "list": {
+      "title": "User List",
+      "empty": "No users yet"
+    },
+    "create": {
+      "title": "Create User",
+      "success": "User created successfully"
+    },
+    "dto": {
+      "email": "Email",
+      "name": "Name"
+    }
+  },
+  "health": {
+    "title": "Health Check",
+    "ok": "Service is healthy"
+  }
+}

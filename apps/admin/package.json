@@ -22,9 +22,12 @@
   },
   "dependencies": {
     "@dogtor/trpc": "workspace:*",
+    "@dogtor/shared-i18n": "workspace:*",
     "@modern-js/runtime": "2.68.17",
+    "i18next": "^25.6.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-i18next": "^16.1.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.6",

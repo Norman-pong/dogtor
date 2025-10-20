@@ -18,7 +18,8 @@
     "@trpc/server": "^10.45.2",
     "@hono/trpc-server": "^0.4.0",
     "@dogtor/trpc": "workspace:*",
-    "@dogtor/dto": "workspace:*"
+    "@dogtor/dto": "workspace:*",
+    "@dogtor/shared-i18n": "workspace:*"
   },
   "devDependencies": {
     "typescript": "~5.9.3",

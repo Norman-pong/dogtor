@@ -1,0 +1,26 @@
+{
+  "common": {
+    "ok": "确定",
+    "cancel": "取消",
+    "loading": "加载中...",
+    "error": "错误"
+  },
+  "users": {
+    "list": {
+      "title": "用户列表",
+      "empty": "暂无用户"
+    },
+    "create": {
+      "title": "创建用户",
+      "success": "用户创建成功"
+    },
+    "dto": {
+      "email": "电子邮件",
+      "name": "账号名"
+    }
+  },
+  "health": {
+    "title": "健康检查",
+    "ok": "服务正常"
+  }
+}

@@ -19,7 +19,7 @@ export const endpointSpecs: EndpointSpec[] = [
     kind: 'query',
     group: 'users',
     summary: '获取用户列表',
-    inputSchema: UserListQueryDto.optional(),
+    inputSchema: UserListQueryDto,
   },
   {
     key: 'users.create',

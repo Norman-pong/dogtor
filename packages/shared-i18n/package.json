@@ -1,0 +1,9 @@
+{
+  "name": "@dogtor/shared-i18n",
+  "version": "0.0.1-alpha.1",
+  "private": false,
+  "type": "module",
+  "exports": {
+    "./locales/*": "./locales/*"
+  }
+}

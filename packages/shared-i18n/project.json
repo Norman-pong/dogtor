@@ -1,0 +1,6 @@
+{
+  "name": "@dogtor/shared-i18n",
+  "sourceRoot": "packages/shared-i18n/locales",
+  "projectType": "library",
+  "tags": ["type:lib", "scope:shared"]
+}

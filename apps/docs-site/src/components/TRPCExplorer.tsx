@@ -3,43 +3,38 @@ import { createTRPCProxyClient, httpBatchLink, loggerLink } from '@trpc/client';
 import { endpointSpecs } from '@dogtor/trpc/client';
 import { z } from 'zod';
 
-function unwrap(schema: z.ZodTypeAny): z.ZodTypeAny {
-  let s = schema;
-  // unwrap nested optional/default/effects
-  while (
-    s instanceof z.ZodOptional ||
-    s instanceof z.ZodDefault ||
-    s instanceof z.ZodEffects
-  ) {
-    // @ts-expect-error unwrap exists on optional/default/effects
-    s = s._def?.innerType ?? s._def?.schema ?? s._def?.effect?.schema ?? s;
+function getPrimaryType(schema: any): string | undefined {
+  const type = schema?.type;
+  const pickType = (t: any) =>
+    Array.isArray(t) ? (t.find((x: string) => x !== 'null') ?? t[0]) : t;
+  if (type) return pickType(type);
+  if (schema?.anyOf) {
+    const sub = schema.anyOf.find((s: any) => s.type && s.type !== 'null');
+    return sub ? getPrimaryType(sub) : undefined;
   }
-  return s;
+  if (schema?.oneOf) {
+    const sub = schema.oneOf.find((s: any) => s.type && s.type !== 'null');
+    return sub ? getPrimaryType(sub) : undefined;
+  }
+  return undefined;
 }
 
-function ZodObjectShape(
-  schema?: z.ZodTypeAny,
-): Record<string, z.ZodTypeAny> | null {
+function defaultValueForSchema(schema: any): any {
   if (!schema) return null;
-  const s = unwrap(schema);
-  if (s instanceof z.ZodObject) {
-    return s.shape;
-  }
-  return null;
-}
-
-function defaultValueFor(schema: z.ZodTypeAny): any {
-  const s = unwrap(schema);
-  if (s instanceof z.ZodString) return '';
-  if (s instanceof z.ZodNumber) return 0;
-  if (s instanceof z.ZodBoolean) return false;
-  if (s instanceof z.ZodObject)
+  if (schema.default !== undefined) return schema.default;
+  const t = getPrimaryType(schema);
+  if (t === 'string') return '';
+  if (t === 'number' || t === 'integer') return 0;
+  if (t === 'boolean') return false;
+  if (t === 'object') {
+    const props = schema.properties ?? {};
     return Object.fromEntries(
-      Object.entries(ZodObjectShape(s) ?? {}).map(([k, v]) => [
+      Object.entries(props).map(([k, v]: [string, any]) => [
         k,
-        defaultValueFor(v),
+        defaultValueForSchema(v),
       ]),
     );
+  }
   return null;
 }
 
@@ -50,12 +45,12 @@ function InputFor({
   onChange,
 }: {
   name: string;
-  schema: z.ZodTypeAny;
+  schema: any;
   value: any;
   onChange: (v: any) => void;
 }) {
-  const s = unwrap(schema);
-  if (s instanceof z.ZodString) {
+  const t = getPrimaryType(schema);
+  if (t === 'string') {
     return (
       <input
         style={{ width: 220, padding: '6px 8px' }}
@@ -65,7 +60,7 @@ function InputFor({
       />
     );
   }
-  if (s instanceof z.ZodNumber) {
+  if (t === 'number' || t === 'integer') {
     return (
       <input
         type="number"
@@ -76,7 +71,7 @@ function InputFor({
       />
     );
   }
-  if (s instanceof z.ZodBoolean) {
+  if (t === 'boolean') {
     return (
       <input
         type="checkbox"
@@ -161,13 +156,16 @@ export default function TRPCExplorer() {
           <h2>{group}</h2>
 
           {specs.map((spec) => {
-            const shape = ZodObjectShape(spec.inputSchema as any);
+            const schema = spec.inputSchema;
+            const json = schema ? z.toJSONSchema(schema) : null;
+
+            const properties = json?.properties ?? null;
             const [form, setForm] = useState<any>(
-              shape
+              properties
                 ? Object.fromEntries(
-                    Object.entries(shape).map(([k, v]) => [
+                    Object.entries(properties).map(([k, v]) => [
                       k,
-                      defaultValueFor(v),
+                      defaultValueForSchema(v),
                     ]),
                   )
                 : undefined,
@@ -187,7 +185,7 @@ export default function TRPCExplorer() {
                     [{spec.kind}] {spec.summary ?? ''}
                   </small>
                 </h3>
-                {shape ? (
+                {properties ? (
                   <div
                     style={{
                       display: 'flex',
@@ -196,7 +194,7 @@ export default function TRPCExplorer() {
                       flexWrap: 'wrap',
                     }}
                   >
-                    {Object.entries(shape).map(([name, sch]) => (
+                    {Object.entries(properties).map(([name, sch]) => (
                       <div
                         key={name}
                         style={{

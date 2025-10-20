@@ -1,5 +1,4 @@
 import { endpointSpecs } from '@dogtor/trpc/client';
-import { zodToJsonSchema } from 'zod-to-json-schema';
 import { z } from 'zod';
 
 export default function TrpcDocs() {
@@ -10,9 +9,8 @@ export default function TrpcDocs() {
 
       {endpointSpecs.map((spec) => {
         const schema = spec.inputSchema;
-        const jsonSchema = schema
-          ? zodToJsonSchema(schema as any, spec.key)
-          : null;
+        const jsonSchema = schema ? z.toJSONSchema(schema) : null;
+
         return (
           <section
             key={spec.key}
@@ -35,7 +33,7 @@ export default function TrpcDocs() {
               <strong>请求参数：</strong>
               {jsonSchema ? (
                 <pre style={{ background: '#f5f5f5', padding: 12 }}>
-                  {JSON.stringify(jsonSchema, null, 2)}
+                  {JSON.stringify(jsonSchema.properties, null, 2)}
                 </pre>
               ) : (
                 <span style={{ color: '#888' }}>无输入参数</span>

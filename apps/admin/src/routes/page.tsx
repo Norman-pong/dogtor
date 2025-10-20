@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import { Helmet } from '@modern-js/runtime/head';
 import { trpcClient } from '@/api/trpc';
 import './index.css';
+import { useI18n } from '@/locales';
 
 const CreateUserForm = () => {
+  const { t } = useI18n();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
@@ -16,10 +18,10 @@ const CreateUserForm = () => {
     setMessage(null);
     setError(null);
     try {
-      const res = await trpcClient.users.create.mutate({ email, name });
-      setMessage(`Created user: ${res.user.name} (${res.user.email})`);
+      await trpcClient.users.create.mutate({ email, name });
+      setMessage(t('users.create.success'));
     } catch (err: any) {
-      setError('Failed to create user');
+      setError(t('common.error'));
     } finally {
       setLoading(false);
     }
@@ -27,7 +29,7 @@ const CreateUserForm = () => {
 
   return (
     <form onSubmit={onSubmit} className="card" style={{ marginTop: 16 }}>
-      <h2>Create User</h2>
+      <h2>{t('users.create.title')}</h2>
       <div
         style={{
           display: 'flex',
@@ -38,7 +40,7 @@ const CreateUserForm = () => {
       >
         <input
           type="email"
-          placeholder="email"
+          placeholder={t('users.dto.email')}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -46,7 +48,7 @@ const CreateUserForm = () => {
         />
         <input
           type="text"
-          placeholder="name"
+          placeholder={t('users.dto.name')}
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
@@ -57,7 +59,7 @@ const CreateUserForm = () => {
           disabled={loading}
           style={{ padding: '8px 12px' }}
         >
-          {loading ? 'Creating…' : 'Create'}
+          {loading ? t('common.loading') : t('common.ok')}
         </button>
       </div>
       {message && <p style={{ color: 'green', marginTop: 8 }}>{message}</p>}
@@ -68,6 +70,7 @@ const CreateUserForm = () => {
 
 const HealthStatus = () => {
   const [status, setStatus] = useState<'unknown' | 'ok' | 'error'>('unknown');
+  const { t } = useI18n();
   useEffect(() => {
     (async () => {
       try {
@@ -83,7 +86,12 @@ const HealthStatus = () => {
 
   return (
     <p className="description" style={{ marginTop: 12 }}>
-      API Health: {status === 'unknown' ? 'Checking…' : status.toUpperCase()}
+      {t('health.title')}:{' '}
+      {status === 'unknown'
+        ? t('common.loading')
+        : status === 'ok'
+          ? t('health.ok')
+          : t('common.error')}
     </p>
   );
 };

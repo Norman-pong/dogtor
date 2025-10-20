@@ -1,9 +1,9 @@
-import type { JSX } from '@lynx-js/react'
+import type { JSX } from '@lynx-js/react';
 
 export function HelloLynx(): JSX.Element {
   return (
-    <div style={{ padding: 8 }}>
-      <span>Hello Lynx shared component</span>
-    </div>
-  )
+    <view style={{ padding: 8 }}>
+      <view>Hello Lynx shared component</view>
+    </view>
+  );
 }
