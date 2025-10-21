@@ -19,31 +19,36 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/api-bun build"
+        "cwd": "apps/api-bun",
+        "command": "bun run build"
       }
     },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/api-bun typecheck"
+        "cwd": "apps/api-bun",
+        "command": "bun run typecheck"
       }
     },
     "prisma-generate": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/api-bun prisma:generate"
+        "cwd": "apps/api-bun",
+        "command": "bun run prisma:generate"
       }
     },
     "prisma-migrate": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/api-bun prisma:migrate"
+        "cwd": "apps/api-bun",
+        "command": "bun run prisma:migrate"
       }
     },
     "prisma-migrate-playground": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "$env:DATABASE_URL='file:../.data/playground.db'; pnpm --filter @dogtor/api-bun prisma:migrate"
+        "cwd": "apps/api-bun",
+        "command": "$env:DATABASE_URL='file:../.data/playground.db'; bun run prisma:migrate"
       }
     }
   }

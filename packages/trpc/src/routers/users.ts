@@ -1,4 +1,4 @@
-import { UserCreateDto, UserListQueryDto } from '@dogtor/dto';
+import { UserCreateDto, UserDto, UserListQueryDto } from '@dogtor/dto';
 import { t } from '../trpc';
 
 export const usersRouter = t.router({
@@ -7,7 +7,7 @@ export const usersRouter = t.router({
     .input(UserListQueryDto.optional())
     .query(async ({ ctx, input }) => {
       const users = await ctx.prisma.user.findMany({ take: input?.take ?? 10 });
-      return { users };
+      return { users : users.map((u) => UserDto.parse(u)) };
     }),
 
   // 创建用户
@@ -15,6 +15,6 @@ export const usersRouter = t.router({
     const user = await ctx.prisma.user.create({
       data: { email: input.email, name: input.name },
     });
-    return { user };
+    return { user : UserDto.parse(user) };
   }),
 });

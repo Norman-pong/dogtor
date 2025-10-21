@@ -7,13 +7,15 @@
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/shared-lynx typecheck"
+        "cwd": "packages/shared-lynx",
+        "command": "bun run typecheck"
       }
     },
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/shared-lynx build"
+        "cwd": "packages/shared-lynx",
+        "command": "bun run build"
       }
     }
   }

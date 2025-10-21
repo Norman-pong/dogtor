@@ -10,19 +10,22 @@
     "dev": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/mcp dev"
+        "cwd": "apps/mcp",
+        "command": "bun run dev"
       }
     },
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/mcp build"
+        "cwd": "apps/mcp",
+        "command": "bun run build"
       }
     },
     "server": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/mcp inspect:dev"
+        "cwd": "apps/mcp",
+        "command": "bun run inspect:dev"
       }
     }
   }

@@ -7,13 +7,15 @@
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/trpc typecheck"
+        "cwd": "packages/trpc",
+        "command": "bun run typecheck"
       }
     },
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/trpc build"
+        "cwd": "packages/trpc",
+        "command": "bun run build"
       }
     }
   }

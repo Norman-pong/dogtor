@@ -7,13 +7,15 @@
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/shared-ts typecheck"
+        "cwd": "packages/shared-ts",
+        "command": "bun run typecheck"
       }
     },
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/shared-ts build"
+        "cwd": "packages/shared-ts",
+        "command": "bun run build"
       }
     }
   }

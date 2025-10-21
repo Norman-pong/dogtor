@@ -7,19 +7,22 @@
     "dev": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter docs-site dev"
+        "cwd": "apps/docs-site",
+        "command": "bun run dev"
       }
     },
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter docs-site build"
+        "cwd": "apps/docs-site",
+        "command": "bun run build"
       }
     },
     "preview": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter docs-site preview"
+        "cwd": "apps/docs-site",
+        "command": "bun run preview"
       }
     }
   },

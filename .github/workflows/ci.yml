@@ -5,26 +5,14 @@ on:
     branches:
       - main
     paths:
-      - 'apps/docs-site/**'
+      - 'apps/**'
+      - 'packages/**'
       - 'docs/**'
-      - 'packages/shared-ts/**'
-      - 'packages/dto/**'
-      - 'packages/trpc/**'
-      - 'package.json'
-      - 'pnpm-workspace.yaml'
-      - 'tsconfig.base.json'
-      - 'nx.json'
-      - '.github/workflows/ci.yml'
   pull_request:
     paths:
-      - 'apps/docs-site/**'
+      - 'apps/**'
+      - 'packages/**'
       - 'docs/**'
-      - 'packages/shared-ts/**'
-      - 'packages/dto/**'
-      - 'packages/trpc/**'
-      - 'package.json'
-      - 'pnpm-workspace.yaml'
-      - 'tsconfig.base.json'
 
 permissions:
   actions: read
@@ -33,69 +21,54 @@ permissions:
   id-token: write
 
 jobs:
-  main:
+  changes:
     runs-on: ubuntu-latest
+    outputs:
+      docs: ${{ steps.filter.outputs.docs }}
     steps:
       - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
         with:
-          filter: tree:0
-          fetch-depth: 0
-
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          version: 9.8.0
-          run_install: false
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-
-      - run: pnpm install --frozen-lockfile
-
-      - run: pnpm exec nx fix-ci
-        if: always()
+          filters: |
+            docs:
+              - 'apps/docs-site/**'
+              - 'docs/**'
 
   docs-site:
-    needs: main
+    needs: changes
+    if: needs.changes.outputs.docs == 'true'
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
         with:
           filter: tree:0
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          version: 10.18.3
-          run_install: false
+          bun-version: '1.1.0'
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-
-      - run: pnpm install --frozen-lockfile
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
 
       - name: Build docs-site
-        run: pnpm exec nx run docs-site:build --no-cloud
+        run: bunx nx run docs-site:build --no-cloud
 
       - name: Setup Pages
-        if: success()
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && success()
         uses: actions/configure-pages@v4
         with:
           enablement: true
 
       - name: Upload artifact
-        if: success()
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && success()
         uses: actions/upload-pages-artifact@v3
         with:
           path: './apps/docs-site/doc_build'
 
       - name: Deploy to GitHub Pages
-        if: success()
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && success()
         id: deployment
         uses: actions/deploy-pages@v4

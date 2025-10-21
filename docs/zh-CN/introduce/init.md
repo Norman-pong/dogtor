@@ -44,3 +44,32 @@
 - 环境变量：
   - `CLIENT_PORT`：客户端端口，默认 6284
   - `SERVER_PORT`：服务端端口，默认 6287
+
+
+## 与 AI 协同研发
+
+本项目采用与 AI 协同研发的模式，将 AI 模型的上下文协议（Model Context Protocol）与项目的 MCP 服务进行集成。
+
+
+## 国际化适配
+
+使用 `i18n Ally` 插件能更好的辅助开发，国际化框架为 `react-i18next`
+
+```txt title=shared-i18n
+pnpm i -D @dogtor/shared-i18n
+```
+
+表单检验使用 zod 进行，prisma 错误需要调用后进行捕获，其余错误通过 shared-i18n 进行友好提示。
+
+- trpc 中如何处理国际化字段？
+    - 目前可通过 ctx 注入 locale、t 字段
+    - 
+- trpc 如何捕获 prisma 错误
+
+
+```txt
+dto   z.config(z.locales.zhCN())
+
+```
+
+

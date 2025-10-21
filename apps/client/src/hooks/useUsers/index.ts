@@ -1,33 +1,33 @@
-import { useEffect, useState } from '@lynx-js/react'
-import { trpcClient } from '../../api/trpc'
-
-export type User = { id: unknown; email: string; name: string }
+import { useEffect, useState } from '@lynx-js/react';
+import { trpcClient } from '../../api/trpc';
+import type { UserDto } from '@dogtor/dto';
 
 export function useUsers() {
-  const [users, setUsers] = useState<User[]>([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [users, setUsers] = useState<UserDto[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let cancelled = false
-    ;(async () => {
-      setLoading(true)
-      setError(null)
+    let cancelled = false;
+    (async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const client: typeof trpcClient = (globalThis as any).__trpcClientOverride ?? trpcClient
-        const res = await client.users.list.query()
-        if (!cancelled) setUsers(res?.users ?? [])
+        const client: typeof trpcClient =
+          (globalThis as any).__trpcClientOverride ?? trpcClient;
+        const res = await client.users.list.query();
+        if (!cancelled) setUsers(res?.users ?? []);
       } catch (err) {
-        console.error(err)
-        if (!cancelled) setError('加载用户失败')
+        console.error(err);
+        if (!cancelled) setError('加载用户失败');
       } finally {
-        if (!cancelled) setLoading(false)
+        if (!cancelled) setLoading(false);
       }
-    })()
+    })();
     return () => {
-      cancelled = true
-    }
-  }, [])
+      cancelled = true;
+    };
+  }, []);
 
-  return { users, loading, error }
+  return { users, loading, error };
 }

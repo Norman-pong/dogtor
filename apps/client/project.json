@@ -7,31 +7,36 @@
     "dev": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/client dev"
+        "cwd": "apps/client",
+        "command": "bun run dev"
       }
     },
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/client build"
+        "cwd": "apps/client",
+        "command": "bun run build"
       }
     },
     "preview": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/client preview"
+        "cwd": "apps/client",
+        "command": "bun run preview"
       }
     },
     "test": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/client test"
+        "cwd": "apps/client",
+        "command": "bun run test"
       }
     },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/client typecheck"
+        "cwd": "apps/client",
+        "command": "bun run typecheck"
       }
     }
   }

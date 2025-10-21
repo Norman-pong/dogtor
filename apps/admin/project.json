@@ -10,13 +10,15 @@
     "dev": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/admin dev"
+        "cwd": "apps/admin",
+        "command": "bun run dev"
       }
     },
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm --filter @dogtor/admin build"
+        "cwd": "apps/admin",
+        "command": "bun run build"
       }
     }
   }

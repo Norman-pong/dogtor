@@ -8,8 +8,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "build": "tsc -p tsconfig.json",
     "dev": "tsx src/index.ts",
-    "inspect:dev": "pnpm dlx @modelcontextprotocol/inspector pnpm dev",
-    "inspect:prod": "pnpm dlx @modelcontextprotocol/inspector node dist/index.js"
+    "inspect:dev": "bun x @modelcontextprotocol/inspector bun run dev",
+    "inspect:prod": "bun x @modelcontextprotocol/inspector node dist/index.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.10.0"

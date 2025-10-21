@@ -1,5 +1,13 @@
 import * as z from 'zod';
 
+export const UserDto = z.object({
+  id: z.union([z.number(), z.string()]),
+  email: z.email(),
+  name: z.string().min(1).optional(),
+  createdAt: z.string(),
+});
+export type UserDto = z.infer<typeof UserDto>;
+
 // DTO: 创建用户
 export const UserCreateDto = z.object({
   email: z.email(),
