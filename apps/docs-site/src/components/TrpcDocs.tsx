@@ -1,4 +1,5 @@
 import { endpointSpecs } from '@dogtor/trpc/client';
+
 import { z } from 'zod';
 
 export default function TrpcDocs() {
@@ -9,6 +10,7 @@ export default function TrpcDocs() {
 
       {endpointSpecs.map((spec) => {
         const schema = spec.inputSchema;
+
         const jsonSchema = schema ? z.toJSONSchema(schema) : null;
 
         return (
@@ -16,8 +18,10 @@ export default function TrpcDocs() {
             key={spec.key}
             style={{
               marginTop: 24,
+
               borderTop: '1px solid #eee',
-              paddingTop: 16,
+
+              paddingTop: 16
             }}
           >
             <h3 style={{ marginBottom: 8 }}>

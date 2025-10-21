@@ -1,1 +1,1 @@
-export { endpointSpecs } from './src/spec'
+export { endpointSpecs } from './src/spec';

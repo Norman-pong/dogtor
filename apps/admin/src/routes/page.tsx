@@ -1,26 +1,40 @@
 import { useEffect, useState } from 'react';
+
 import { Helmet } from '@modern-js/runtime/head';
+
 import { trpcClient } from '@/api/trpc';
+
 import './index.css';
+
 import { useI18n } from '@/locales';
 
 const CreateUserForm = () => {
   const { t } = useI18n();
+
   const [email, setEmail] = useState('');
+
   const [name, setName] = useState('');
+
   const [loading, setLoading] = useState(false);
+
   const [message, setMessage] = useState<string | null>(null);
+
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     setLoading(true);
+
     setMessage(null);
+
     setError(null);
+
     try {
       await trpcClient.users.create.mutate({ email, name });
+
       setMessage(t('users.create.success'));
-    } catch (err: any) {
+    } catch {
       setError(t('common.error'));
     } finally {
       setLoading(false);
@@ -33,9 +47,12 @@ const CreateUserForm = () => {
       <div
         style={{
           display: 'flex',
+
           gap: 8,
+
           alignItems: 'center',
-          flexWrap: 'wrap',
+
+          flexWrap: 'wrap'
         }}
       >
         <input
@@ -70,13 +87,18 @@ const CreateUserForm = () => {
 
 const HealthStatus = () => {
   const [status, setStatus] = useState<'unknown' | 'ok' | 'error'>('unknown');
+
   const { t } = useI18n();
+
   useEffect(() => {
     (async () => {
       try {
         // const res = await trpcClient.health.query()
+
         const res = await trpcClient.users.list.query();
+
         console.log(res);
+
         setStatus(res ? 'ok' : 'error');
       } catch {
         setStatus('error');
