@@ -5,6 +5,7 @@ on:
     branches:
       - main
     paths:
+      - '**/workflows/ci.yml'
       - 'apps/**'
       - 'packages/**'
       - 'docs/**'
@@ -21,21 +22,6 @@ permissions:
   id-token: write
 
 jobs:
-  fmt:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          filter: tree:0
-          fetch-depth: 0
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: '1.1.0'
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-      - name: Format check
-        run: bunx oxfmt --check .
   changes:
     runs-on: ubuntu-latest
     outputs:
@@ -63,7 +49,7 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: '1.1.0'
+          bun-version: '1.3.0'
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
