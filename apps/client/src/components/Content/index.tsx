@@ -1,4 +1,4 @@
-import arrow from '../../assets/arrow.png';
+import arrow from "../../assets/arrow.png";
 
 const Content = () => {
   return (
@@ -9,12 +9,11 @@ const Content = () => {
         Edit
         <text
           style={{
-            fontStyle: 'italic',
-
-            color: 'rgba(255, 255, 255, 0.85)'
+            fontStyle: "italic",
+            color: "rgba(255, 255, 255, 0.85)",
           }}
         >
-          {' src/App.tsx '}
+          {" src/App.tsx "}
         </text>
         to see updates!
       </text>

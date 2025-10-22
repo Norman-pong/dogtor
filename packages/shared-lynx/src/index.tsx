@@ -1,4 +1,4 @@
-import type { JSX } from '@lynx-js/react';
+import type { JSX } from "@lynx-js/react";
 
 export function HelloLynx(): JSX.Element {
   return (

@@ -1,15 +1,11 @@
-import { useCallback, useState } from '@lynx-js/react';
-
-import lynxLogo from '../../assets/lynx-logo.png';
-
-import reactLynxLogo from '../../assets/react-logo.png';
+import { useCallback, useState } from "@lynx-js/react";
+import lynxLogo from "../../assets/lynx-logo.png";
+import reactLynxLogo from "../../assets/react-logo.png";
 
 const Banner = () => {
   const [alterLogo, setAlterLogo] = useState(false);
-
   const onTap = useCallback(() => {
-    'background only';
-
+    "background only";
     setAlterLogo((prev) => !prev);
   }, []);
 
