@@ -1,0 +1,18 @@
+name = "dogtor-api"
+main = "src/index.ts"
+compatibility_date = "2025-10-23"
+workers_dev = true
+
+[env.test]
+name = "dogtor-admin-test"
+workers_dev = true
+routes = [
+  { pattern = "dogtor-admin-test.zhimingcool.com/*", zone_name = "dogtor-admin-test" }
+]
+
+[env.production]
+name = "dogtor-admin"
+workers_dev = false
+routes = [
+  { pattern = "dogtor-admin-test.zhimingcool.com/*", zone_name = "dogtor-admin" }
+]
