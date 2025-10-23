@@ -6,24 +6,28 @@ workers_dev = true
 [[d1_databases]]
 binding = "DB"
 database_name = "dogtor-db"
-database_id = "__D1_DATABASE_ID_PROD__"
+database_id = "__D1_DATABASE_ID_TEST__"
 migrations_dir = "./d1/migrations"
 
 [env.test]
 name = "dogtor-api-test"
 workers_dev = true
-route = "__TEST_DOMAIN__/*"
+routes = [
+  { pattern = "__TEST_DOMAIN__/*", zone_name = "dogtor-api-test" }
+]
 
 [[env.test.d1_databases]]
 binding = "DB"
-database_name = "dogtor-db"
-database_id = "__D1_DATABASE_ID_PROD__"
+database_name = "dogtor-db-test"
+database_id = "__D1_DATABASE_ID_TEST__"
 migrations_dir = "./d1/migrations"
 
 [env.production]
 name = "dogtor-api"
 workers_dev = false
-route = "__PROD_DOMAIN__/*"
+routes = [
+  { pattern = "__PROD_DOMAIN__/*", zone_name = "dogtor-api" }
+]
 
 [[env.production.d1_databases]]
 binding = "DB"
