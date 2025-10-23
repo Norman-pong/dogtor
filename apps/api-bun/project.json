@@ -2,53 +2,16 @@
   "name": "@dogtor/api-bun",
   "sourceRoot": "apps/api-bun/src",
   "projectType": "application",
-  "tags": ["type:app", "scope:api"],
+  "tags": [
+    "type:app",
+    "scope:api"
+  ],
   "targets": {
     "dev": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "bun --env-file=apps/api-bun/.env --hot apps/api-bun/src/index.ts"
-      }
-    },
-    "dev-playground": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "bun --env-file=apps/api-bun/.env.playground --hot apps/api-bun/src/index.ts"
-      }
-    },
-    "build": {
-      "executor": "nx:run-commands",
-      "options": {
         "cwd": "apps/api-bun",
-        "command": "bun run build"
-      }
-    },
-    "typecheck": {
-      "executor": "nx:run-commands",
-      "options": {
-        "cwd": "apps/api-bun",
-        "command": "bun run typecheck"
-      }
-    },
-    "prisma-generate": {
-      "executor": "nx:run-commands",
-      "options": {
-        "cwd": "apps/api-bun",
-        "command": "bun run prisma:generate"
-      }
-    },
-    "prisma-migrate": {
-      "executor": "nx:run-commands",
-      "options": {
-        "cwd": "apps/api-bun",
-        "command": "bun run prisma:migrate"
-      }
-    },
-    "prisma-migrate-playground": {
-      "executor": "nx:run-commands",
-      "options": {
-        "cwd": "apps/api-bun",
-        "command": "$env:DATABASE_URL='file:../.data/playground.db'; bun run prisma:migrate"
+        "command": "bun run dev"
       }
     }
   }

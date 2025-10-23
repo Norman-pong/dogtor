@@ -13,5 +13,10 @@
     "text": "接口文档",
     "link": "/api/trpc-api",
     "activeMatch": "/api"
+  },
+  {
+    "text": "博客",
+    "link": "/blog",
+    "activeMatch": "/blog"
   }
 ]

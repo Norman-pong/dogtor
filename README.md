@@ -1,90 +1,58 @@
 # Dogtor
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+## Star History
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+ORM 库与后端服务框架对比
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+[![Star History Chart](https://api.star-history.com/svg?repos=drizzle-team/drizzle-orm,prisma/prisma,honojs/hono,elysiajs/elysia&type=date&legend=top-left)](https://www.star-history.com/#drizzle-team/drizzle-orm&prisma/prisma&honojs/hono&elysiajs/elysia&type=date&legend=top-left)
 
-## Finish your CI setup
+## Fork & CI 部署指南（Cloudflare Workers + D1）
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/5tjMTBENpY)
+本项目的 API 使用 Cloudflare Workers + D1，并通过 CI 注入域名与数据库 ID，便于他人 fork 后快速部署。
 
+### 前置要求
+- 拥有 Cloudflare 账号与目标域名的 DNS 管理权（该域名需在 Cloudflare Zone 中）。
+- 已启用 Cloudflare Workers 与 D1。
+- GitHub 仓库有权限设置 Variables 与 Secrets。
 
-## Generate a library
+### 需要在 GitHub 仓库设置的变量
+到 `Settings → Secrets and variables → Actions → Variables` 新增以下变量（非敏感）：
+- `PROD_DOMAIN`: 生产环境域名（仅主机名，不含协议），例如 `api.example.com`
+- `TEST_DOMAIN`: 测试环境域名（仅主机名），例如 `api-staging.example.com`
+- `D1_DATABASE_ID_PROD`: 生产 D1 的 `database_id`
+- `D1_DATABASE_ID_TEST`: 测试 D1 的 `database_id`
 
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
-```
+到 `Settings → Secrets and variables → Actions → Secrets` 新增以下密钥（敏感）：
+- `CLOUDFLARE_API_TOKEN`: Cloudflare API Token（需包含 Workers 与 D1 权限）
+- `CLOUDFLARE_ACCOUNT_ID`: Cloudflare 账户 ID
 
-## Run tasks
+提示：`database_id` 可通过 `wrangler d1 list` 查看，或在 `wrangler d1 create <name>` 输出中获取。
 
-To build the library use:
+### 首次部署步骤
+1. 创建 D1 数据库（测试与生产各一份）：
+   - `bunx wrangler d1 create dogtor-test`
+   - `bunx wrangler d1 create dogtor-prod`
+   - 使用 `bunx wrangler d1 list` 获取两个库的 `database_id`，填到上面的仓库变量中。
+2. 确保域名已在 Cloudflare DNS 管理：`PROD_DOMAIN` 和 `TEST_DOMAIN` 必须属于你的 Cloudflare Zone。
+3. 推送到 `main` 分支，会触发 `.github/workflows/cf-workers.yml`：
+   - CI 会将 `apps/api-bun/wrangler.toml` 中的占位符替换为你的变量值：
+     - `__PROD_DOMAIN__`、`__TEST_DOMAIN__`
+     - `__D1_DATABASE_ID_PROD__`、`__D1_DATABASE_ID_TEST__`、`__D1_DATABASE_ID_DEFAULT__`
+   - 应用 D1 迁移（生产）：`bunx wrangler d1 migrations apply DB --config apps/api-bun/wrangler.toml --remote --env production`
+   - 部署生产环境：`bunx wrangler deploy --config apps/api-bun/wrangler.toml --env production`
 
-```sh
-npx nx build pkg1
-```
+### 本地开发（测试环境）
+- 启动本地：`bunx wrangler dev --config apps/api-bun/wrangler.toml --env test`
+- 本地应用迁移（可选）：`bunx wrangler d1 migrations apply DB --config apps/api-bun/wrangler.toml --local --env test`
+- 说明：`[env.test]` 保留 `workers_dev = true`，支持 `*.workers.dev` 预览；`route` 配置仅用于绑定自定义域名，不影响本地预览。
 
-To run any task with Nx use:
+### 工作流注入机制说明
+- Wrangler 不支持在 `wrangler.toml` 中直接使用环境变量插值，因此在 CI 中使用 `sed` 将占位符替换为仓库变量值。
+- 项目已在 `wrangler.toml` 中添加如下占位符：
+  - 顶层 `[[d1_databases]]` 的 `database_id = "__D1_DATABASE_ID_DEFAULT__"`（用于类型生成，本地可替换为测试库 ID）。
+  - `[env.test]` 与 `[env.production]` 的 `route` 和 `[[env.*.d1_databases]]` 的 `database_id` 分别使用对应占位符。
 
-```sh
-npx nx <target> <project-name>
-```
-
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Versioning and releasing
-
-To version and release the library use
-
-```
-npx nx release
-```
-
-Pass `--dry-run` to see what would happen without actually releasing the library.
-
-[Learn more about Nx release &raquo;](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Keep TypeScript project references up to date
-
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
-
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
-
-```sh
-npx nx sync
-```
-
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
-
-```sh
-npx nx sync:check
-```
-
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
-
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### 常见问题
+- 路由绑定失败：检查 `PROD_DOMAIN`/`TEST_DOMAIN` 是否在你的 Cloudflare Zone 内；确认 `CLOUDFLARE_ACCOUNT_ID` 与 Token 权限有效。
+- D1 绑定或迁移报错：确保 CI 已正确注入 `database_id`（查看 Action 日志），并使用绑定名 `DB` 进行迁移与访问。
+- 需要部署测试环境：可在工作流中新增一个 `--env test` 的 Job，或本地运行 `bunx wrangler deploy --env test`（先替换占位符）。

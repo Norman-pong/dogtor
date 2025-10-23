@@ -6,7 +6,7 @@ import type { Context } from "../../types";
 describe("health router", () => {
   test("returns ok", async () => {
     const createCaller = t.createCallerFactory(appRouter);
-    const caller = createCaller({ prisma: {} as unknown as Context["prisma"] });
+    const caller = createCaller({ db: {} as unknown as Context["db"] });
     const res = await caller.health();
     expect(res).toEqual({ ok: true });
   });

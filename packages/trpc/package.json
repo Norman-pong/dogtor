@@ -19,7 +19,6 @@
     "@dogtor/dto": "workspace:*"
   },
   "devDependencies": {
-    "@prisma/client": "^5.22.0",
     "hono": "^4.9.12",
     "typescript": "~5.9.3"
   },

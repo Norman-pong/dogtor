@@ -1,25 +1,14 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { PrismaClient } from "@prisma/client";
 import { trpcServer } from "@hono/trpc-server";
 import { appRouter } from "@dogtor/trpc";
 import { createContext as createTrpcContext } from "./context";
+import type { D1Database } from "@cloudflare/workers-types";
 
-// Avoid TS errors for Bun global without bun-types
-declare const Bun: any;
+const app = new Hono<{ Bindings: { DB: D1Database } }>();
 
-const app = new Hono();
-
-// 允许跨域（Admin 开发服在 8080 上）
 app.use("*", cors());
-
-// Prevent multiple PrismaClient instances in dev
-const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
-export const prisma = globalForPrisma.prisma ?? new PrismaClient();
-if (!globalForPrisma.prisma) globalForPrisma.prisma = prisma;
-
 app.get("/", (c) => c.json({ ok: true }));
-
 // tRPC 挂载
 app.use(
   "/trpc/*",
@@ -29,15 +18,6 @@ app.use(
   }),
 );
 
-app.get("/users", async (c) => {
-  const users = await prisma.user.findMany({ take: 10 });
-  return c.json([...users]);
-});
-
-// Bun entry
-if (typeof Bun !== "undefined") {
-  const port = Number(process.env.PORT ?? 3000);
-  Bun.serve({ port, fetch: app.fetch });
-  // eslint-disable-next-line no-console
-  console.log(`API listening on http://localhost:${port}`);
-}
+export default {
+  fetch: app.fetch,
+};

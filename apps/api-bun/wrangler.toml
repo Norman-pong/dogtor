@@ -1,0 +1,32 @@
+name = "dogtor-api"
+main = "src/index.ts"
+compatibility_date = "2025-10-23"
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "dogtor-db"
+database_id = "__D1_DATABASE_ID_PROD__"
+migrations_dir = "./d1/migrations"
+
+[env.test]
+name = "dogtor-api-test"
+workers_dev = true
+route = "__TEST_DOMAIN__/*"
+
+[[env.test.d1_databases]]
+binding = "DB"
+database_name = "dogtor-db"
+database_id = "__D1_DATABASE_ID_PROD__"
+migrations_dir = "./d1/migrations"
+
+[env.production]
+name = "dogtor-api"
+workers_dev = false
+route = "__PROD_DOMAIN__/*"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "dogtor-db"
+database_id = "__D1_DATABASE_ID_PROD__"
+migrations_dir = "./d1/migrations"

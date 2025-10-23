@@ -4,25 +4,21 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun run --hot src/index.ts",
-    "build": "bun build ./src/index.ts --outdir dist --target bun",
-    "start": "bun run dist/index.js",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:migrate:init": "prisma migrate dev --name init"
+    "dev": "bunx wrangler dev --port 3000",
+    "d1:migrate": "bunx wrangler d1 migrations apply dogtor-db"
   },
   "dependencies": {
     "hono": "^4.6.10",
-    "@prisma/client": "^5.21.0",
     "@trpc/server": "^10.45.2",
     "@hono/trpc-server": "^0.4.0",
+    "drizzle-orm": "^0.31.0",
     "@dogtor/trpc": "workspace:*",
     "@dogtor/dto": "workspace:*",
     "@dogtor/shared-i18n": "workspace:*"
   },
   "devDependencies": {
     "typescript": "~5.9.3",
-    "prisma": "^5.21.0"
+    "drizzle-kit": "^0.22.0",
+    "@cloudflare/workers-types": "^4.20241022.0"
   }
 }

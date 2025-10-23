@@ -7,6 +7,7 @@ out-tsc
 tsconfig.tsbuildinfo
 **/build
 **/build/**
+.wrangler
 
 # dependencies
 node_modules
